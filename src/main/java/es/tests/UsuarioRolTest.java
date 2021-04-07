@@ -1,11 +1,14 @@
 package es.tests;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
+import es.entidades.Supermercados.Supermercado;
 import es.entidades.usuarios.Rol;
 import es.entidades.usuarios.Usuario;
 
@@ -18,10 +21,33 @@ public class UsuarioRolTest {
 
 //		añadirUsuario("jefa69", "Miriam Calero", "12/11/1955");
 //		añadirRol("Guest");
-		asignarRol(2L, 2L);
+//		asignarRol(2L, 2L);
+		mostrarUsuariosRols();
 
 	}
 
+	//Method used to show all user's roles from the database.
+	public static void mostrarUsuariosRols(){
+		EntityManager em = emf.createEntityManager();
+
+		em.getTransaction().begin();
+
+		List<Usuario> result=em.createQuery("from Usuario").getResultList();
+		
+		for (Usuario usuario : result) {
+			List<Rol> roles=usuario.getRoles();
+			for (int i = 0; i < roles.size(); i++) {
+				System.out.println("ID user: " + usuario.getId() + " , ID Role: " + roles.get(i).getIdRol() + " , Description: " + roles.get(i).getDescription());
+			}
+		}
+
+		em.getTransaction().commit();
+
+		em.close();
+		
+		
+	}
+	
 	private static void añadirUsuario(String nombreUsuario, String nombreCompleto, String fechaNacimiento) {
 
 		Usuario user = new Usuario();
