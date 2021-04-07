@@ -31,7 +31,7 @@ public class Usuario implements Serializable {
 	private String fechaNacimiento;
 
 	
-	//Needed to connect with the entity "Rol".s
+	//Needed to connect with the entity "Rol".
 	@ManyToMany
 	@JoinTable(name = "usuario_roles", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private List<Rol> roles;
