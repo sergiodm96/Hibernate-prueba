@@ -23,7 +23,7 @@ public class TestPais {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-//		addPais();
+		addPais();
 
 //		modifyPais();
 //		removePais(12L);

@@ -17,14 +17,14 @@ public class TestSupermercado {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		String nombre = "Consum";
-		String ciudad = "Tarragona";
+		String nombre = "Carrefour";
+		String ciudad = "París";
 
 //		añadirSupermercado(nombre, ciudad);
 //		actualizarPaisIdSupermercado();
 		
 
-//		 actualizarSupermercado("from Supermercado where idSupermercado=1", "pais_id", "13");
+		 actualizarSupermercado("from Supermercado where idSupermercado=5", "ciudad", "Toulouse");
 		 
 		 
 		 mostrarSupermercados();
@@ -78,7 +78,7 @@ public class TestSupermercado {
 	private static void añadirSupermercado(String nombre, String ciudad) {
 		EntityManager em = emf.createEntityManager();
 
-		Pais pais=em.find(Pais.class,12L);
+		Pais pais=em.find(Pais.class,1L);
 		Supermercado supermarket = new Supermercado(nombre, ciudad, pais);
 
 		em.getTransaction().begin();
