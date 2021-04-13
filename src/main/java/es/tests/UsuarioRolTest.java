@@ -19,35 +19,37 @@ public class UsuarioRolTest {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-//		añadirUsuario("jefa69", "Miriam Calero", "12/11/1955");
-//		añadirRol("Guest");
-//		asignarRol(2L, 2L);
+//		añadirUsuario("jkcx222_", "Ander Fer", "11/11/1999");
+//		añadirRol("User");
+		asignarRol(1L, 1L);
 		mostrarUsuariosRols();
 
 	}
 
-	//Method used to show all user's roles from the database.
-	public static void mostrarUsuariosRols(){
+	// Method used to show all user's roles from the database.
+	public static void mostrarUsuariosRols() {
 		EntityManager em = emf.createEntityManager();
 
 		em.getTransaction().begin();
 
-		List<Usuario> result=em.createQuery("from Usuario").getResultList();
-		
+		List<Usuario> result = em.createQuery("from Usuario").getResultList();
+
 		for (Usuario usuario : result) {
-			List<Rol> roles=usuario.getRoles();
+			System.out.println(usuario);
+			List<Rol> roles = usuario.getRoles();
 			for (int i = 0; i < roles.size(); i++) {
-				System.out.println("ID user: " + usuario.getId() + " , ID Role: " + roles.get(i).getIdRol() + " , Description: " + roles.get(i).getDescription());
+				System.out.println("ID user: " + usuario.getId() + " , ID Role: " + roles.get(i).getIdRol()
+						+ " , Description: " + roles.get(i).getDescription());
 			}
+			System.out.println();
 		}
 
 		em.getTransaction().commit();
 
 		em.close();
-		
-		
+
 	}
-	
+
 	private static void añadirUsuario(String nombreUsuario, String nombreCompleto, String fechaNacimiento) {
 
 		Usuario user = new Usuario();
@@ -78,28 +80,46 @@ public class UsuarioRolTest {
 
 		em.close();
 	}
-	
+
 	private static void asignarRol(Long idUsuario, Long idRol) {
-	
-		
+
 		EntityManager em = emf.createEntityManager();
 
 		em.getTransaction().begin();
 
-		Usuario user=em.find(Usuario.class,idUsuario);
-		List<Rol> roles=em.createQuery("from Rol where idRol=" + idRol, Rol.class).getResultList();
-		
-		if(user.getRoles()==null) {
-			user.setRoles(roles);
-		}else {
-			user.addRoles(roles);
+		Usuario user = em.find(Usuario.class, idUsuario);
+		List<Rol> rolesAñadir = em.createQuery("from Rol where idRol=" + idRol, Rol.class).getResultList();
+
+		List<Rol> rolesUsuario = user.getRoles();
+
+		boolean exists = false;
+
+		for (Rol rol : rolesUsuario) {
+			for (Rol rol2 : rolesAñadir) {
+				if (rol2 == rol) {
+					exists = true;
+				}
+			}
 		}
-		
-		em.merge(user);
 
-		em.getTransaction().commit();
+		if (exists) {
+			System.out.println("Ese rol ya esta asignado a este usuario.");
+			System.out.println();
+		} else {
+			if (user.getRoles() == null) {
+				user.setRoles(rolesAñadir);
+			} else {
+				user.addRoles(rolesAñadir);
+			}
 
-		em.close();
+			em.merge(user);
+
+			em.getTransaction().commit();
+
+			em.close();
+
+		}
+
 	}
 
 }
